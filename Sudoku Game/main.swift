@@ -342,3 +342,62 @@ class Game {
         return self.step
     }
 }
+
+var game = Game()
+while true {
+    print("-------------------------------------\n")
+    print(game.printScreen())
+    
+    if let input = readLine() {
+        if input.lowercased() == "q" {
+            break
+        } else if game.getStep() != 0 && input.lowercased() == "menu" {
+            game.setStarted(false)
+            game.setStep(Game.main_menu)
+            continue
+        }
+        if !game.isStarted() {
+            if let choice = Int(input) {
+                if !game.validateChoice(choice) {
+                    print("Invalid input")
+                }
+                
+                if game.getStep() == Game.game_levels {
+                    game.start(level: choice)
+                    game.setStep(Game.game)
+                    continue
+                }
+                
+                game.setStep(choice)
+                continue
+            } else {
+                print("Invalid input")
+                continue
+            }
+        } else {
+            if input == "0" {
+                game.sudoku!.printSolver()
+                break
+            }
+            
+            let components = input.split(separator: " ")
+            if components.count == 3 {
+                if let row = Int(components[0]), let col = Int(components[1]), let value = Int(components[2]) {
+                    if !game.sudoku!.validate(row, col, value) {
+                        game.setValidationError("Row, column and number should be in range 1..9")
+                        continue
+                    }
+                    
+                    if !game.sudoku!.isCorrectGuess(row, col, value) {
+                        game.setValidationError("\(value) is wrong number for the cell[\(row)][\(col)]. Try another one")
+                        continue
+                    }
+                    
+                    game.sudoku!.updateGrid(row: row, col: col, value: value)
+                }
+            } else {
+                game.setValidationError("Invalid input. Please enter row, column, and value separated by spaces.")
+            }
+        }
+    }
+}
