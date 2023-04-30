@@ -1,4 +1,4 @@
-# sudoku
+# Sudoku
 The objective of the Sudoku console game is to fill a 9x9 grid with numbers so that each row, column, and 3x3 sub-grid (also called a box or region) contains 
 all of the digits from 1 to 9 without repetition. The puzzle starts with some of the cells already filled in, and the player must use logic and 
 deduction to determine the correct numbers to fill in the remaining cells. The game is won when the entire grid is filled in correctly.
